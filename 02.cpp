@@ -31,8 +31,16 @@ class Fecha{
 			return aux;
 		};
 
-		Fecha operator[](int index){
-
+		int operator[](int index){
+			if( index == 1){
+				return this->anio;
+			}else if( index == 2){
+				return this->mes;
+			}else if( index == 3){
+				return this->dia;
+			}else{
+				return 0;
+			};
 		};
 };
 
