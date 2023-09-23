@@ -25,15 +25,14 @@ class Correo{
 		bool operator<=(const Correo& correo2){
 			return this->mail == correo2.mail;
 		};
-
-    friend ostream& operator<<(std::ostream& os, const Correo& correo) {
-			os << "Nombre: " << correo.nombre << " Mail: " << correo.mail << endl; 
-
-			return os;
-		};
-
-
 };
+
+ostream& operator<<(std::ostream& os, const Correo& correo) {
+	os << "Nombre: " << correo.nombre << " Mail: " << correo.mail << endl; 
+
+	return os;
+};
+
 
 int main(){
 
