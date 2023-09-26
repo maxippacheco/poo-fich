@@ -24,19 +24,42 @@ bool isin_array(int *inicio, int *fin, int element){
 	return false;
 };
 
-int* remove_duplicates(int *inicio, int *fin, int arr_size){	
-	int *new_arr = new int[arr_size];
+int* SinRepetidos(int* begin, int* end){
+  int* aux= new int[end-begin];
+  int tam=0;
+  int* it=begin;
+ 
+  while(it != end){
+    //Ver si esta
+    bool rep=false;
+  
+	  for(int i=0;i<tam;i++){
+      if(aux[i]==*it){
+        rep=true;
+        break;
+      }
+    }
+    
+		if(!rep){
+      aux[i]=*it;
+      i++;
+      tam++;
+    }
+    it++;
+  }
+ 
+  //Crear nuevo con el tamaño posta
+  int* v=new int[tam];
 
-	while (inicio != fin)
-	{
-		if()
+  for(int i=0;i<tam;i++)
+    v[i]=aux[i];
+  delete[] aux;
 
-		inicio++;
-	}
-	
+  return v;
 }
 
 int main(){
 
-	return 0; 
+    return 0;
+
 }
