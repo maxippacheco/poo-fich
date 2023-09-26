@@ -65,7 +65,7 @@ class Fraccion{
 
 };
 
-std::ostream& operator<<(std::ostream& os, const Fraccion& fraccion) {
+ostream& operator<<(ostream& os, const Fraccion& fraccion) {
     os << "Numerador: " << fraccion.getNumerador() << " Denominador: " << fraccion.getDenominador();
     return os;
 }

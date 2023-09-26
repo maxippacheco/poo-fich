@@ -35,7 +35,7 @@ class Cilindro{
 			return this->obtenerVolumen() > c2.obtenerVolumen();
 		}
 
-		friend istream& operator>>(istream& os, Cilindro& c2){
+		friend ostream& operator>>(ostream& os, Cilindro& c2){
 			os >> c2.radio;
 			return os;
 		}
