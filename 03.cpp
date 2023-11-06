@@ -1,69 +1,77 @@
-// Escriba un programa que genere un archivo binario con una lista de 100 enteros
-// ordenados de forma creciente (por ejemplo: 0, 5, 10, 15, 20, 25...). Luego escriba
-// otro programa que permita insertar (no reemplazar) un nuevo dato de tipo entero,
-// ingresado por el usuario, en el archivo manteniendo el orden creciente. Evite utilizar
-// vectores auxiliare
+// Desarrolle una clase templatizada llamada ManejadorArchivo que posea métodos
+// y atributos para manipular un archivo binario que contenga registros del tipo de
+// dato especificado por el parámetro. La clase debe poseer métodos para:
+// a. Abrir un archivo binario y cargar los registros en memoria.
+// b. Obtener el registro en una posición especificada por el usuario.
+// c. Modificar el registro en una posición determinada.
+// d. Actualizar la información del archivo con los cambios.
+// e. Utilice la clase desde un programa cliente para leer los registros escritos en
+// el archivo binario generado en el ejercicio 6.5.
 #include<iostream>
 #include<fstream>
-
+#include<vector>
 using namespace std;
 
-int main() {
-    ofstream archivo("lista.bin", ios::binary | ios::trunc);
+struct Par{
+	int m_int;
+	float m_float;
+};
 
-    if (!archivo) {
-        cout << "No se puede abrir el archivo para su escritura" << endl;
-        return 1;
-    }
+template<typename T>
+class ManejadorArchivo{
+	fstream manejador_file;
+	vector<T>	manejador_vector;
+	string manejador_txt;
 
-    for (int i = 0; i < 100; i++) {
-        int n = i * 5;
-        archivo.write(reinterpret_cast<char*>(&n), sizeof(n));
-    }
+	public:
+		ManejadorArchivo(string nombre_archivo): manejador_txt(nombre_archivo){
+			manejador_file.open(manejador_txt, ios::binary|ios::in|ios::out|ios::ate);
+			
+			int size_file = (int)manejador_file.tellg()/sizeof(T);
+			manejador_file.seekg(0);
 
-    archivo.close();
+			for (size_t i = 0; i < size_file; i++)
+			{
+				T aux;
+				manejador_file.read(reinterpret_cast<char*>(&aux), sizeof(aux));
+				manejador_vector.push_back(aux);
+			}
+			
+			manejador_file.close();
+		}
 
-    int dato_user;
-    cout << "Ingrese un numero: " << endl;
-    cin >> dato_user;
+		T ver_registro(int i){
+			return manejador_vector[i - 1];
+		}
 
-    fstream archivo2("lista.bin", ios::binary | ios::in | ios::out | ios::ate);
-    int pos;
-    int cant = archivo2.tellg() / sizeof(int);
-    archivo2.seekg(0);
+		void modificar_registro(int i, T dato){
+			manejador_vector[i - 1] = dato;
+		}
 
-    int aux;
-    archivo2.read(reinterpret_cast<char*>(&aux), sizeof(aux));
+		void actualizar(){
+			manejador_file.open(manejador_txt, ios::binary|ios::trunc|ios::out);
 
-    while (dato_user > aux) {
-        archivo2.read(reinterpret_cast<char*>(&aux), sizeof(aux));
-    }
+			for (size_t i = 0; i < manejador_vector.size(); i++)
+			{
+				manejador_file.write(reinterpret_cast<char*>(&manejador_vector[i]), sizeof(T));
+			}
 
-    pos = archivo2.tellg() - static_cast<streampos>(sizeof(int));
+			manejador_file.close();
+			
+		}
+};
 
-    cout << "Quedó en posición: " << pos << endl;
+int main(int argc, char const *argv[])
+{
 
-    for (int i = cant; i >= pos / sizeof(int); i--) {
-        int dato;
+	ManejadorArchivo<Par> archi1("grupo.dat");
+	Par pos = archi1.ver_registro(9);
+			cout << pos.m_int << " " << pos.m_float << endl;
 
-        archivo2.seekg(i * sizeof(dato), ios::beg);
-        archivo2.read(reinterpret_cast<char*>(&dato), sizeof(dato));
+	archi1.modificar_registro(10,{777,7.77});
+	archi1.actualizar();
 
-        archivo2.seekp((i + 1) * sizeof(dato), ios::beg);
-        archivo2.write(reinterpret_cast<char*>(&dato), sizeof(dato));
-    }
+	cout << archi1.ver_registro(10).m_int << " " << archi1.ver_registro(10).m_float << endl;
 
-    archivo2.seekp(pos);
-    archivo2.write(reinterpret_cast<char*>(&dato_user), sizeof(dato_user));
-
-    for (int i = 0; i < cant + 1; i++) {
-        int dato;
-        archivo2.seekg(i * sizeof(dato));
-        archivo2.read(reinterpret_cast<char*>(&dato), sizeof(dato));
-        cout << dato << endl;
-    }
-
-    archivo2.close();
-
-    return 0;
+	return 0;
 }

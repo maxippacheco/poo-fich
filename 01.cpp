@@ -1,33 +1,29 @@
-#include<iostream>
-#include<fstream>
+// Implemente una función Clamp(...) que reciba como parámetros una variable (por
+// referencia) y dos valores indicando los límites superior e inferior para el valor de
+// dicha variable. Si el valor de la variable supera su máximo, este debe ajustarse al
+// máximo valor permitido. De la misma forma si el valor es inferior al mínimo. Pruebe
+// la función templatizada desde un programa cliente.
 
+#include<iostream>
 using namespace std;
 
-struct Par{
-	int i;
-	double d;
-};
+template<typename T>
+T Clamp(T &variable, T superior, T inferior){
+	if( variable > superior){
+		variable = superior;
+	}else if(variable < inferior){
+		variable = inferior;
+	}
+	return variable;
+}
 
 int main(){
 
-	ifstream archivo("datos.dat", ios::binary|ios::ate);
-	
-	// deducir el tamanio del archivo con la bandera ate y pregunto en que posicion estoy y vuelvo al principio
-	// archivo.tellg() me dice a donde estoy en ese momento del archivo
-	int n = archivo.tellg() / sizeof(Par);
-	// que bisque en pos 0
-	archivo.seekg(0);
+	int number = 100;
 
-	for (size_t i = 0; i < n; i++)
-	{
-		Par p;
-		archivo.read(reinterpret_cast<char*>(&p), sizeof(p));
-		cout << p.i << " " << p.d << endl;
-	}
-	
-	archivo.close();
+	int number_format = Clamp(number, 200, 80);
 
-	
+	cout << number_format << endl;
 
 	return 0;
 }
