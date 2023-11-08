@@ -1,0 +1,20 @@
+1, Ventas, González, Juan
+2, Soporte, Pérez, María
+3, Marketing, López, Carlos
+4, Finanzas, Rodríguez, Laura
+5, Desarrollo, Martínez, Luis
+6, Recursos Humanos, Sánchez, Ana
+7, Operaciones, Torres, Pablo
+8, Logística, Ramírez, Sofia
+9, Producción, García, Miguel
+10, Compras, Vargas, Marta
+11, Investigación, Ortega, Andrés
+12, Legal, Castro, Carolina
+13, Calidad, Jiménez, Pedro
+14, Servicio al Cliente, Mendoza, Valeria
+15, TI, Aguilar, Alberto
+16, Mantenimiento, Ríos, Andrea
+17, Gerencia, Navarro, David
+18, Auditoría, Ruiz, Paula
+19, Diseño, Flores, Mario
+20, Publicidad, Silva, Beatriz

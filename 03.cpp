@@ -1,77 +1,46 @@
-// Desarrolle una clase templatizada llamada ManejadorArchivo que posea métodos
-// y atributos para manipular un archivo binario que contenga registros del tipo de
-// dato especificado por el parámetro. La clase debe poseer métodos para:
-// a. Abrir un archivo binario y cargar los registros en memoria.
-// b. Obtener el registro en una posición especificada por el usuario.
-// c. Modificar el registro en una posición determinada.
-// d. Actualizar la información del archivo con los cambios.
-// e. Utilice la clase desde un programa cliente para leer los registros escritos en
-// el archivo binario generado en el ejercicio 6.5.
+// Ejercicio 1 (25 pts) Un archivo “discurso.txt” contiene la transcripción de un discurso
+// de un político importante. El político en cuestión tiene la mala costumbre de usar
+// palabrotas en su discurso. Sus asesores han decidido modificar la transcripción para
+// no molestar a los votantes más susceptibles. Para ello han generado un archivo
+// “palabrotas.txt”, con la lista de las que usa con más frecuencia. Escriba un programa
+// c++ que modifique el archivo del discurso reemplazando todas las palabrotas por
+// “***beep***”. No hay palabras cortadas en el texto y puede haber 2 o mas palabrotas
+// en una línea..
 #include<iostream>
-#include<fstream>
 #include<vector>
+#include<fstream>
 using namespace std;
 
-struct Par{
-	int m_int;
-	float m_float;
-};
+int main(){
 
-template<typename T>
-class ManejadorArchivo{
-	fstream manejador_file;
-	vector<T>	manejador_vector;
-	string manejador_txt;
+	string palabrota;
+	vector<string> palabrotas;
+	ifstream palabrotas_file("palabrotas.txt");
 
-	public:
-		ManejadorArchivo(string nombre_archivo): manejador_txt(nombre_archivo){
-			manejador_file.open(manejador_txt, ios::binary|ios::in|ios::out|ios::ate);
+	if(!palabrotas_file.is_open())
+	{	
+		cout << "No se pudo abrir el archivo " << endl;
+		return 1;
+	}
+
+	while (palabrotas_file >> palabrota)
+	{
+		palabrotas.push_back(palabrota);
+	}
+
+	palabrotas_file.close();
+
+	ifstream discurso("discurso.txt");
+	ofstream discurso_modificado("discurso_mod.txt");
+	string line;
+
+	while (getline(discurso, line))
+	{
 			
-			int size_file = (int)manejador_file.tellg()/sizeof(T);
-			manejador_file.seekg(0);
+	}
+	
 
-			for (size_t i = 0; i < size_file; i++)
-			{
-				T aux;
-				manejador_file.read(reinterpret_cast<char*>(&aux), sizeof(aux));
-				manejador_vector.push_back(aux);
-			}
-			
-			manejador_file.close();
-		}
-
-		T ver_registro(int i){
-			return manejador_vector[i - 1];
-		}
-
-		void modificar_registro(int i, T dato){
-			manejador_vector[i - 1] = dato;
-		}
-
-		void actualizar(){
-			manejador_file.open(manejador_txt, ios::binary|ios::trunc|ios::out);
-
-			for (size_t i = 0; i < manejador_vector.size(); i++)
-			{
-				manejador_file.write(reinterpret_cast<char*>(&manejador_vector[i]), sizeof(T));
-			}
-
-			manejador_file.close();
-			
-		}
-};
-
-int main(int argc, char const *argv[])
-{
-
-	ManejadorArchivo<Par> archi1("grupo.dat");
-	Par pos = archi1.ver_registro(9);
-			cout << pos.m_int << " " << pos.m_float << endl;
-
-	archi1.modificar_registro(10,{777,7.77});
-	archi1.actualizar();
-
-	cout << archi1.ver_registro(10).m_int << " " << archi1.ver_registro(10).m_float << endl;
+	
 
 	return 0;
 }
